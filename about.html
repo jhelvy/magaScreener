@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -66,16 +100,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
-<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
-<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
-<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
-<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
-<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
 
 
 </head>
@@ -105,6 +129,10 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./keywords.html"> 
+<span class="menu-text">Keywords</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./strategies.html"> 
 <span class="menu-text">Strategies</span></a>
   </li>  
@@ -132,8 +160,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#how-it-works" id="toc-how-it-works" class="nav-link active" data-scroll-target="#how-it-works">How It Works</a></li>
-  <li><a href="#supported-file-types" id="toc-supported-file-types" class="nav-link" data-scroll-target="#supported-file-types">Supported File Types</a></li>
-  <li><a href="#keywords-list" id="toc-keywords-list" class="nav-link" data-scroll-target="#keywords-list">Keywords List</a></li>
+  <li><a href="#locally-running-the-app" id="toc-locally-running-the-app" class="nav-link" data-scroll-target="#locally-running-the-app">Locally Running the App</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/jhelvy/magaScreener/edit/main/about.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jhelvy/magaScreener/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -159,14 +186,8 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This tool allows you to analyze documents for specific MAGA-targeted keywords. Upload a document, and the app will count words, characters, and occurrences of predetermined keywords.</p>
-<section id="how-it-works" class="level3">
-<h3 class="anchored" data-anchor-id="how-it-works">How It Works</h3>
-<p>The analyzer extracts text from your document and searches for keywords from our predefined list. It then counts how many times each keyword appears in your document. That’s all - it’s pretty simple.</p>
-<p>The underlying technology enabling this site is pretty cool though! It uses the <a href="https://quarto.org/">Quarto</a> publishing system, the <a href="https://www.r-project.org/">R programming language</a>, and the <a href="https://shiny.posit.co/">shiny</a> web application framework, leveraging <a href="https://quarto.org/docs/blog/posts/2022-10-25-shinylive-extension/">shinylive</a> Quarto extension to run the whole thing in the browser as a static web page (thanks to <a href="https://github.com/coatless"><span class="citation" data-cites="coatless">@coatless</span></a> for posting such a great <a href="https://github.com/coatless-quarto/r-shinylive-demo">tutorial</a> on how to set this up). The site itself is hosted on GitHub pages, and the source code can be found <a href="https://github.com/jhelvy/magaScreener">here</a>.</p>
-</section>
-<section id="supported-file-types" class="level3">
-<h3 class="anchored" data-anchor-id="supported-file-types">Supported File Types</h3>
+<p>This tool allows you to analyze documents for specific MAGA-targeted keywords. It is intended to be used to help identify words that might get screened by the federal government, e.g.&nbsp;in a grant proposal for federal funding. Upload a document, and the app will count words, characters, and occurrences of predetermined keywords.</p>
+<p><strong>Supported File Types</strong>:</p>
 <ul>
 <li>Word Documents: .docx, .doc</li>
 <li>PDF Files: .pdf</li>
@@ -175,12 +196,28 @@ ul.task-list li input[type="checkbox"] {
 <li>Web Documents: .html, .htm, .xml</li>
 <li>Other: .rtf, .json</li>
 </ul>
+<section id="how-it-works" class="level3">
+<h3 class="anchored" data-anchor-id="how-it-works">How It Works</h3>
+<p>The analyzer extracts text from your document and searches for keywords from our predefined list. It then counts how many times each keyword appears in your document. That’s all - it’s pretty simple.</p>
+<p>All of the calculations run locally in your web browser using <a href="https://webassembly.org/">web assembly</a>. Whatever you upload isn’t stored or sent anywhere for processing, so you can upload even sensitive documents without worry. You can also <a href="#locally-running-the-app">run it locally</a> on your computer if you want.</p>
+<p>This site was built entirely using open-source tools. It uses the <a href="https://quarto.org/">Quarto</a> publishing system to build the website, the <a href="https://www.r-project.org/">R programming language</a> for logic, and the <a href="https://shiny.posit.co/">shiny</a> web application framework to implement the R code, leveraging <a href="https://quarto.org/docs/blog/posts/2022-10-25-shinylive-extension/">shinylive</a> Quarto extension to run the whole thing in the browser as a static web page (thanks to <a href="https://github.com/coatless"><span class="citation" data-cites="coatless">@coatless</span></a> for posting such a great <a href="https://github.com/coatless-quarto/r-shinylive-demo">tutorial</a> on how to set this up). The site itself is hosted on GitHub pages, and the source code can be found at <a href="https://github.com/jhelvy/magaScreener">https://github.com/jhelvy/magaScreener</a>.</p>
 </section>
-<section id="keywords-list" class="level3">
-<h3 class="anchored" data-anchor-id="keywords-list">Keywords List</h3>
-<p>The analyzer searches for the following keywords:</p>
-<div class="datatables html-widget html-fill-item" id="htmlwidget-bc7b9a906de3a2292ebb" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-bc7b9a906de3a2292ebb">{"x":{"filter":"none","vertical":false,"data":[["accessible","activism","activists","advocacy","advocate","advocates","affirming care","all-inclusive","allyship","anti-racism","antiracist","assigned at birth","assigned female at birth","assigned male at birth","assigned male","assigned remale","at risk","barrier","barriers","belong","bias","biased","biased toward","biases","biases towards","biologically female","biologically male","BIPOC","Black","breastfeed","breastfeed + people","breastfeed + person","chestfeed","chestfeed + people","chestfeed + person","clean energy","climate crisis","climate science","commercial sex worker","community diversity","community equity","confirmation bias","cultural competence","cultural differences","cultural heritage","cultural sensitivity","culturally appropriate","culturally responsive","DEI","DEIA","DEIAB","DEIJ","disabilities","disability","discriminated","discrimination","discriminatory","disparity","diverse","diverse backgrounds","diverse communities","diverse community","diverse group","diverse groups","diversified","diversify","diversifying","diversity","enhance the diversity","enhancing diversity","environmental quality","equal opportunity","equality","equitable","equitableness","equity","ethnicity","excluded","exclusion","expression","female","females","feminism","fostering inclusivity","GBV","gender","gender based","gender based violence","gender diversity","gender identity","gender ideology","gender-affirming care","genders","Gulf of Mexico","hate speech","health disparity","health equity","hispanic minority","historically","identity","immigrants","implicit bias","implicit biases","inclusion","inclusive","inclusive leadership","inclusiveness","inclusivity","increase diversity","increase the diversity","indigenous community","inequalities","inequality","inequitable","inequities","inequity","injustice","institutional","intersectional","intersectionality","key groups","key people","key populations","Latinx","LGBT","LGBTQ","marginalize","marginalized","men who have sex with men","mental health","minorities","minority","most risk","MSM","multicultural","Mx","Native American","non-binary","nonbinary","oppression","oppressive","orientation","uterus","people + uterus","people-centered care","person-centered","person-centered care","polarization","political","pollution","pregnant people","pregnant person","pregnant persons","prejudice","privilege","privileges","promote diversity","promoting diversity","pronoun","pronouns","prostitute","race","race and ethnicity","racial","racial diversity","racial identity","racial inequality","racial justice","racially","racism","segregation","sense of belonging","sex","sexual preferences","sexuality","social justice","sociocultural","socioeconomic","status","stereotype","stereotypes","systemic","systemically","they/them","trans","transgender","transsexual","trauma","traumatic","tribal","unconscious bias","underappreciated","underprivileged","underrepresentation","underrepresented","underserved","undervalued","victim","victims","vulnerable populations","woke","women","women and underrepresented"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>words<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":50,"columnDefs":[{"name":"words","targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<section id="locally-running-the-app" class="level3">
+<h3 class="anchored" data-anchor-id="locally-running-the-app">Locally Running the App</h3>
+<p>You can run the app on your local machine without even being connected to the internet. To do so, follow these steps:</p>
+<p><strong>Install stuff</strong></p>
+<ol type="1">
+<li>Install <a href="https://cloud.r-project.org/">R</a></li>
+<li>Install <a href="https://posit.co/download/rstudio-desktop/">RStudio Desktop</a></li>
+<li>Install <a href="https://quarto.org/docs/get-started/">Quarto</a></li>
+</ol>
+<p><strong>Download and run the app</strong></p>
+<p>Once everything is installed, download the <a href="https://github.com/jhelvy/magaScreener/archive/refs/heads/main.zip">source code</a>, then unzip the file and open the <code>"magaScreener.Rproj"</code> file. This should open RStudio.</p>
+<p>Once open, click on the <code>"index.qmd"</code> file, then click the “render” button at the top of the RStudio application (it has a little blue arrow next to it). This should open a web browser from where you can then use the application.</p>
+<p>Alternatively you can click on the <code>"Terminal"</code> window and run the following command:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>quarto preview</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
 </section>

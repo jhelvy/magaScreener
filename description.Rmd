@@ -1,0 +1,40 @@
+**Supported File Types**:
+
+- Word Documents: .docx, .doc
+- PDF Files: .pdf
+- Text Files: .txt
+- Spreadsheets: .csv, .xlsx
+- Web Documents: .html, .htm, .xml
+- Other: .rtf, .json
+
+### How It Works
+
+The analyzer extracts text from your document and searches for keywords from our predefined list. It then counts how many times each keyword appears in your document. That's all - it's pretty simple. 
+
+All of the calculations run locally in your web browser using [web assembly](https://webassembly.org/). Whatever you upload isn't stored or sent anywhere for processing, so you can upload even sensitive documents without worry. You can also [run it locally](#locally-running-the-app) on your computer if you want.
+
+This site was built entirely using open-source tools. It uses the [Quarto](https://quarto.org/) publishing system to build the website, the [R programming language](https://www.r-project.org/) for logic, and the [shiny](https://shiny.posit.co/) web application framework to implement the R code, leveraging [shinylive](https://quarto.org/docs/blog/posts/2022-10-25-shinylive-extension/) Quarto extension to run the whole thing in the browser as a static web page (thanks to [@coatless](https://github.com/coatless) for posting such a great [tutorial](https://github.com/coatless-quarto/r-shinylive-demo) on how to set this up). The site itself is hosted on GitHub pages, and the source code can be found at [https://github.com/jhelvy/magaScreener](https://github.com/jhelvy/magaScreener).
+
+### Locally Running the App 
+
+You can run the app on your local machine without even being connected to the internet. To do so, follow these steps:
+
+**Install stuff**
+
+1. Install [R](https://cloud.r-project.org/)
+1. Install [RStudio Desktop](https://posit.co/download/rstudio-desktop/)
+1. Install [Quarto](https://quarto.org/docs/get-started/)
+
+**Download and run the app**
+
+Once everything is installed, download the [source code](https://github.com/jhelvy/magaScreener/archive/refs/heads/main.zip), then unzip the file and open the `"magaScreener.Rproj"` file. This should open RStudio. 
+
+Once open, click on the `"index.qmd"` file, then click the "render" button at the top of the RStudio application (it has a little blue arrow next to it). This should open a web browser from where you can then use the application. 
+
+Alternatively you can click on the `"Terminal"` window and run the following command:
+
+```{r}
+#| eval: false
+
+quarto preview
+```
