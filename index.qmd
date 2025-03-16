@@ -26,8 +26,44 @@ library(jsonlite) # For JSON handling
 library(xml2)     # For XML handling
 library(readxl)   # For Excel file handling
 
-# List of keywords
-keywords <- c("accessible", "activism", "activists", "advocacy", "advocate", "advocates", "affirming care", "all-inclusive", "allyship", "anti-racism", "antiracist", "assigned at birth", "assigned female at birth", "assigned male at birth", "assigned male", "assigned female", "at risk", "barrier", "barriers", "belong", "bias", "biased", "biased toward", "biases", "biases towards", "biologically female", "biologically male", "BIPOC", "Black", "breastfeed", "breastfeed + people", "breastfeed + person", "chestfeed", "chestfeed + people", "chestfeed + person", "clean energy", "climate crisis", "climate science", "commercial sex worker", "community diversity", "community equity", "confirmation bias", "cultural competence", "cultural differences", "cultural heritage", "cultural sensitivity", "culturally appropriate", "culturally responsive", "DEI", "DEIA", "DEIAB", "DEIJ", "disabilities", "disability", "discriminated", "discrimination", "discriminatory", "disparity", "diverse", "diverse backgrounds", "diverse communities", "diverse community", "diverse group", "diverse groups", "diversified", "diversify", "diversifying", "diversity", "enhance the diversity", "enhancing diversity", "environmental quality", "equal opportunity", "equality", "equitable", "equitableness", "equity", "ethnicity", "excluded", "exclusion", "expression", "female", "females", "feminism", "fostering inclusivity", "GBV", "gender", "gender based", "gender based violence", "gender diversity", "gender identity", "gender ideology", "gender-affirming care", "genders", "Gulf of Mexico", "hate speech", "health disparity", "health equity", "hispanic minority", "historically", "identity", "immigrants", "implicit bias", "implicit biases", "inclusion", "inclusive", "inclusive leadership", "inclusiveness", "inclusivity", "increase diversity", "increase the diversity", "indigenous community", "inequalities", "inequality", "inequitable", "inequities", "inequity", "injustice", "institutional", "intersectional", "intersectionality", "key groups", "key people", "key populations", "Latinx", "LGBT", "LGBTQ", "marginalize", "marginalized", "men who have sex with men", "mental health", "minorities", "minority", "most risk", "MSM", "multicultural", "Mx", "Native American", "non-binary", "nonbinary", "oppression", "oppressive", "orientation", "uterus", "people + uterus", "people-centered care", "person-centered", "person-centered care", "polarization", "political", "pollution", "pregnant people", "pregnant person", "pregnant persons", "prejudice", "privilege", "privileges", "promote diversity", "promoting diversity", "pronoun", "pronouns", "prostitute", "race", "race and ethnicity", "racial", "racial diversity", "racial identity", "racial inequality", "racial justice", "racially", "racism", "segregation", "sense of belonging", "sex", "sexual preferences", "sexuality", "social justice", "sociocultural", "socioeconomic", "status", "stereotype", "stereotypes", "systemic", "systemically", "they/them", "trans", "transgender", "transsexual", "trauma", "traumatic", "tribal", "unconscious bias", "underappreciated", "underprivileged", "underrepresentation", "underrepresented", "underserved", "undervalued", "victim", "victims", "vulnerable populations", "woke", "women", "women and underrepresented"
+# Default MAGA keywords list
+default_keywords <- c("accessible", "activism", "activists", "advocacy", "advocate", "advocates", "affirming care", "all-inclusive", "allyship", "anti-racism", "antiracist", "assigned at birth", "assigned female at birth", "assigned male at birth", "assigned male", "assigned female", "at risk", "barrier", "barriers", "belong", "bias", "biased", "biased toward", "biases", "biases towards", "biologically female", "biologically male", "BIPOC", "Black", "breastfeed", "breastfeed + people", "breastfeed + person", "chestfeed", "chestfeed + people", "chestfeed + person", "clean energy", "climate crisis", "climate science", "commercial sex worker", "community diversity", "community equity", "confirmation bias", "cultural competence", "cultural differences", "cultural heritage", "cultural sensitivity", "culturally appropriate", "culturally responsive", "DEI", "DEIA", "DEIAB", "DEIJ", "disabilities", "disability", "discriminated", "discrimination", "discriminatory", "disparity", "diverse", "diverse backgrounds", "diverse communities", "diverse community", "diverse group", "diverse groups", "diversified", "diversify", "diversifying", "diversity", "enhance the diversity", "enhancing diversity", "environmental quality", "equal opportunity", "equality", "equitable", "equitableness", "equity", "ethnicity", "excluded", "exclusion", "expression", "female", "females", "feminism", "fostering inclusivity", "GBV", "gender", "gender based", "gender based violence", "gender diversity", "gender identity", "gender ideology", "gender-affirming care", "genders", "Gulf of Mexico", "hate speech", "health disparity", "health equity", "hispanic minority", "historically", "identity", "immigrants", "implicit bias", "implicit biases", "inclusion", "inclusive", "inclusive leadership", "inclusiveness", "inclusivity", "increase diversity", "increase the diversity", "indigenous community", "inequalities", "inequality", "inequitable", "inequities", "inequity", "injustice", "institutional", "intersectional", "intersectionality", "key groups", "key people", "key populations", "Latinx", "LGBT", "LGBTQ", "marginalize", "marginalized", "men who have sex with men", "mental health", "minorities", "minority", "most risk", "MSM", "multicultural", "Mx", "Native American", "non-binary", "nonbinary", "oppression", "oppressive", "orientation", "uterus", "people + uterus", "people-centered care", "person-centered", "person-centered care", "polarization", "political", "pollution", "pregnant people", "pregnant person", "pregnant persons", "prejudice", "privilege", "privileges", "promote diversity", "promoting diversity", "pronoun", "pronouns", "prostitute", "race", "race and ethnicity", "racial", "racial diversity", "racial identity", "racial inequality", "racial justice", "racially", "racism", "segregation", "sense of belonging", "sex", "sexual preferences", "sexuality", "social justice", "sociocultural", "socioeconomic", "status", "stereotype", "stereotypes", "systemic", "systemically", "they/them", "trans", "transgender", "transsexual", "trauma", "traumatic", "tribal", "unconscious bias", "underappreciated", "underprivileged", "underrepresentation", "underrepresented", "underserved", "undervalued", "victim", "victims", "vulnerable populations", "woke", "women", "women and underrepresented"
+)
+
+# Message themes
+message_themes <- list(
+  maga = list(
+    warning = c(
+      "Uh oh, looks like your document has some words on the naughty list - no first amendment rights for you!",
+      "ALERT! Your document contains language that may cause conservative fainting spells!",
+      "WARNING: Potentially woke content detected! Hide your children!",
+      "Potentially woke language detected! Your document might cause pearl-clutching!",
+      "Snowflake trigger warning: Your document contains words that might make Tucker Carlson cry!"
+    ),
+    success = c(
+      "Congratulations! Your document is free of scary words like \"gender\" that trigger the MAGA mind.",
+      "Good news! Nothing in your document will upset Fox News viewers!",
+      "You're safe! No words that might cause conservative heart palpitations detected.",
+      "Document approved for Florida schools! No scary inclusive language found!", 
+      "Phew! Your document is officially woke-free!"
+    )
+  ),
+  general = list(
+    warning = c(
+      "Heads up! Your document contains some of the keywords you're screening for.",
+      "Keywords detected! Some terms from your list appear in this document.",
+      "Keyword match found! Your document contains terms from your screening list.",
+      "Screening alert: Keywords from your list were found in this document.",
+      "Attention: Your document contains monitored keywords from your list."
+    ),
+    success = c(
+      "All clear! Your document doesn't contain any keywords from your list.",
+      "No matches found! None of your keywords appear in this document.",
+      "Good to go! Your document is free of all the keywords you're looking for.",
+      "Clean scan! No keywords from your list were detected in this document.",
+      "No hits! Your document doesn't contain any terms from your screening list."
+    )
+  )
 )
 
 # Custom JS for PDF handling - optimized for analysis with explicit button trigger
@@ -162,8 +198,8 @@ ui <- page_fluid(
         padding: 10px 0;
       }
       
-      /* Snarky message styling */
-      .snarky-message {
+      /* Message styling */
+      .result-message {
         font-size: 1.1rem;
         padding: 15px;
         margin: 20px 0;
@@ -171,13 +207,13 @@ ui <- page_fluid(
         font-weight: bold;
       }
       
-      .snarky-warning {
+      .result-warning {
         background-color: #f8d7da;
         color: #721c24;
         border: 1px solid #f5c6cb;
       }
       
-      .snarky-success {
+      .result-success {
         background-color: #d4edda;
         color: #155724;
         border: 1px solid #c3e6cb;
@@ -199,45 +235,99 @@ ui <- page_fluid(
       .col-sm-8 {
         padding-left: 30px;
       }
+      
+      /* Keyword list display */
+      #keywords_display {
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-top: 10px;
+        font-family: monospace;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+      }
+      
+      /* Tabs styling */
+      .nav-tabs {
+        margin-bottom: 15px;
+      }
     "))
   ),
   
+  # App title
+  h2("Keyword Screener", class="text-center mb-4"),
+  
   # Layout with sidebar and main content in a fluidRow
   fluidRow(
-    # Sidebar panel
+    # Left sidebar panel
     column(
       width = 4,
-      h4("Document Upload", class = "mb-3"),
-      fileInput("document", "Choose Document", 
-                accept = c(".docx", ".doc", ".pdf", ".txt", ".csv", ".html", 
-                           ".htm", ".rtf", ".xml", ".json", ".xlsx", ".xls")),
+      h4("Configuration", class = "mb-3"),
       
-      # PDF processing status (conditionally shown)
-      conditionalPanel(
-        condition = "input.pdf_loading == true",
-        div(
-          class = "alert alert-info",
-          "Processing PDF... This may take a moment.",
-          tags$div(
-            class = "progress mt-2",
-            tags$div(
-              id = "pdf-progress-bar",
-              class = "progress-bar progress-bar-striped progress-bar-animated",
-              role = "progressbar",
-              style = "width: 0%"
+      # Tabs for configuration
+      tabsetPanel(
+        id = "config_tabs",
+        tabPanel(
+          "Document",
+          br(),
+          fileInput("document", "Choose Document", 
+                    accept = c(".docx", ".doc", ".pdf", ".txt", ".csv", ".html", 
+                               ".htm", ".rtf", ".xml", ".json", ".xlsx", ".xls")),
+          
+          # PDF processing status (conditionally shown)
+          conditionalPanel(
+            condition = "input.pdf_loading == true",
+            div(
+              class = "alert alert-info",
+              "Processing PDF... This may take a moment.",
+              tags$div(
+                class = "progress mt-2",
+                tags$div(
+                  id = "pdf-progress-bar",
+                  class = "progress-bar progress-bar-striped progress-bar-animated",
+                  role = "progressbar",
+                  style = "width: 0%"
+                )
+              )
             )
-          )
+          ),
+          
+          tags$p("Supported formats: Word (.docx, .doc), PDF, Text, CSV, HTML, XML, JSON, Excel (.xlsx, .xls), RTF"),
+        ),
+        
+        tabPanel(
+          "Keywords",
+          br(),
+          radioButtons("keyword_source", "Keyword Source:", 
+                       choices = c("Default MAGA Keywords" = "default",
+                                   "Upload Your Own CSV" = "custom"),
+                       selected = "default"),
+          
+          # Custom keywords upload
+          conditionalPanel(
+            condition = "input.keyword_source == 'custom'",
+            fileInput("keywords_file", "Upload Keywords CSV",
+                      accept = c(".csv", ".txt")),
+            tags$p("CSV should have one keyword per row in a single column.")
+          ),
+          
+          # Display of current keywords
+          h5("Current Keywords:", class = "mt-3"),
+          htmlOutput("keywords_display"),
+          
+          # Message style selection
+          radioButtons("message_style", "Feedback Style:", 
+                       choices = c("MAGA Theme" = "maga",
+                                   "General Theme" = "general"),
+                       selected = "general")
         )
       ),
       
-      # Added analyze button for manual analysis triggering
+      # Analyze button (below tabs)
+      hr(),
       actionButton("analyze_btn", "Analyze Document", 
                    class = "btn-primary btn-block mt-3"),
-      
-      hr(),
-      
-      tags$p("Supported formats: Word (.docx, .doc), PDF, Text, CSV, HTML, XML, JSON, Excel (.xlsx, .xls), RTF"),
-      tags$p(class = "text-muted", "Click 'Analyze Document' after uploading to begin analysis.")
     ),
     
     # Main content
@@ -259,8 +349,8 @@ ui <- page_fluid(
           verbatimTextOutput("document_info")
         ),
         
-        # Snarky message output
-        htmlOutput("snarky_message"),
+        # Result message output
+        htmlOutput("result_message"),
         
         # Keywords table - only shown if keywords are found
         conditionalPanel(
@@ -290,12 +380,72 @@ server <- function(input, output, session) {
   # Reactive values to store analysis results
   results <- reactiveVal(NULL)
   
+  # Reactive value for active keywords
+  active_keywords <- reactiveVal(default_keywords)
+  
   # Store PDF text when it becomes available
   pdf_text <- reactiveVal(NULL)
   observe({
     if (!is.null(input$pdf_text)) {
       pdf_text(input$pdf_text)
     }
+  })
+  
+  # Update active keywords based on source selection
+  observe({
+    if (input$keyword_source == "default") {
+      active_keywords(default_keywords)
+    } else if (input$keyword_source == "custom" && !is.null(input$keywords_file)) {
+      # Read custom keywords from uploaded file
+      tryCatch({
+        # Try reading as CSV first
+        keywords_df <- read.csv(input$keywords_file$datapath, stringsAsFactors = FALSE, header = FALSE)
+        custom_keywords <- as.character(keywords_df[[1]])
+        
+        # If no keywords found or error, try reading as plain text
+        if (length(custom_keywords) == 0) {
+          custom_keywords <- readLines(input$keywords_file$datapath)
+        }
+        
+        # Clean keywords (remove empty strings)
+        custom_keywords <- custom_keywords[custom_keywords != ""]
+        
+        # Update active keywords
+        if (length(custom_keywords) > 0) {
+          active_keywords(custom_keywords)
+        } else {
+          # If no valid keywords, revert to default
+          showNotification("No valid keywords found in file. Using default keywords.", type = "warning")
+          active_keywords(default_keywords)
+        }
+      }, error = function(e) {
+        showNotification(paste("Error reading keywords file:", e$message), type = "error")
+        # On error, revert to default
+        active_keywords(default_keywords)
+      })
+    }
+  })
+  
+  # Display current keywords
+  output$keywords_display <- renderUI({
+    keywords <- active_keywords()
+    
+    if (length(keywords) > 20) {
+      displayed_keywords <- keywords[1:20]
+      keyword_text <- paste(displayed_keywords, collapse = ", ")
+      keyword_text <- paste0(keyword_text, ", ... and ", length(keywords) - 20, " more")
+    } else {
+      keyword_text <- paste(keywords, collapse = ", ")
+    }
+    
+    tags$div(
+      id = "keywords_display",
+      keyword_text,
+      tags$div(
+        style = "text-align: right; margin-top: 5px;",
+        tags$small(paste(length(keywords), "keywords total"))
+      )
+    )
   })
   
   # Output indicator for whether document has been analyzed
@@ -496,7 +646,7 @@ server <- function(input, output, session) {
       setProgress(value = 0.5, detail = "Searching for keywords...")
       
       # Find keywords in the text
-      keyword_results <- find_keywords(text, keywords)
+      keyword_results <- find_keywords(text, active_keywords())
       
       # Calculate word and character counts
       words <- unlist(strsplit(text, "\\s+"))
@@ -513,7 +663,9 @@ server <- function(input, output, session) {
         total_chars = nchar(text),
         keywords_found = keyword_results$keywords,
         keyword_counts = keyword_results$counts,
-        error = NULL
+        error = NULL,
+        keyword_source = input$keyword_source,
+        message_style = input$message_style
       ))
     })
   })
@@ -533,40 +685,27 @@ server <- function(input, output, session) {
       "File Name: ", results()$document_name, "\n",
       "File Type: ", toupper(results()$file_type), "\n",
       "Word Count: ", format(results()$total_words, big.mark = ","), "\n",
-      "Analysis Date: ", format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+      "Analysis Date: ", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), "\n",
+      "Keyword Source: ", 
+      ifelse(results()$keyword_source == "default", "Default MAGA Keywords", "Custom Keywords")
     )
   })
   
-  # Snarky messages - choose randomly from a set for each case
-  output$snarky_message <- renderUI({
+  # Result messages based on theme selected
+  output$result_message <- renderUI({
     if (is.null(results())) return(NULL)
-
-  # Snarky messages for when keywords are found
-    warning_messages <- c(
-      "Uh oh, looks like your document has some words on the naughty list - no first amendment rights for you!",
-      "ALERT! Your document contains language that may cause conservative fainting spells!",
-      "WARNING: Potentially woke content detected! Hide your children!",
-      "Potentially woke language detected! Your document might cause pearl-clutching!",
-      "Snowflake trigger warning: Your document contains words that might make Tucker Carlson cry!"
-    )
     
-    # Snarky messages for when no keywords are found
-    success_messages <- c(
-      "Congratulations! Your document is free of scary words like \"gender\" that trigger the MAGA mind.",
-      "Good news! Nothing in your document will upset Fox News viewers!",
-      "You're safe! No words that might cause conservative heart palpitations detected.",
-      "Document approved for Florida schools! No scary inclusive language found!", 
-      "Phew! Your document is officially woke-free!"
-    )
-
+    # Get the appropriate message set based on theme
+    theme <- results()$message_style
+    
     if (length(results()$keywords_found) > 0) {
       # Keywords found - show warning message
       total_keywords <- sum(results()$keyword_counts)
       unique_keywords <- length(results()$keywords_found)
       
       div(
-        class = "snarky-message snarky-warning",
-        sample(warning_messages, 1),
+        class = "result-message result-warning",
+        sample(message_themes[[theme]]$warning, 1),
         tags$br(),
         tags$span(
           style = "font-size: 0.9rem; font-weight: normal;",
@@ -577,8 +716,8 @@ server <- function(input, output, session) {
     } else {
       # No keywords found - show success message
       div(
-        class = "snarky-message snarky-success",
-        sample(success_messages, 1)
+        class = "result-message result-success",
+        sample(message_themes[[theme]]$success, 1)
       )
     }
   })
