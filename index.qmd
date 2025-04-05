@@ -26,9 +26,33 @@ library(jsonlite) # For JSON handling
 library(xml2)     # For XML handling
 library(readxl)   # For Excel file handling
 
-# List of keywords
-keywords <- c("accessible", "activism", "activists", "advocacy", "advocate", "advocates", "affirming care", "all-inclusive", "allyship", "anti-racism", "antiracist", "assigned at birth", "assigned female at birth", "assigned male at birth", "assigned male", "assigned female", "at risk", "barrier", "barriers", "belong", "bias", "biased", "biased toward", "biases", "biases towards", "biologically female", "biologically male", "BIPOC", "Black", "breastfeed", "breastfeed + people", "breastfeed + person", "chestfeed", "chestfeed + people", "chestfeed + person", "clean energy", "climate crisis", "climate science", "commercial sex worker", "community diversity", "community equity", "confirmation bias", "cultural competence", "cultural differences", "cultural heritage", "cultural sensitivity", "culturally appropriate", "culturally responsive", "DEI", "DEIA", "DEIAB", "DEIJ", "disabilities", "disability", "discriminated", "discrimination", "discriminatory", "disparity", "diverse", "diverse backgrounds", "diverse communities", "diverse community", "diverse group", "diverse groups", "diversified", "diversify", "diversifying", "diversity", "enhance the diversity", "enhancing diversity", "environmental quality", "equal opportunity", "equality", "equitable", "equitableness", "equity", "ethnicity", "excluded", "exclusion", "expression", "female", "females", "feminism", "fostering inclusivity", "GBV", "gender", "gender based", "gender based violence", "gender diversity", "gender identity", "gender ideology", "gender-affirming care", "genders", "Gulf of Mexico", "hate speech", "health disparity", "health equity", "hispanic minority", "historically", "identity", "immigrants", "implicit bias", "implicit biases", "inclusion", "inclusive", "inclusive leadership", "inclusiveness", "inclusivity", "increase diversity", "increase the diversity", "indigenous community", "inequalities", "inequality", "inequitable", "inequities", "inequity", "injustice", "institutional", "intersectional", "intersectionality", "key groups", "key people", "key populations", "Latinx", "LGBT", "LGBTQ", "marginalize", "marginalized", "men who have sex with men", "mental health", "minorities", "minority", "most risk", "MSM", "multicultural", "Mx", "Native American", "non-binary", "nonbinary", "oppression", "oppressive", "orientation", "uterus", "people + uterus", "people-centered care", "person-centered", "person-centered care", "polarization", "political", "pollution", "pregnant people", "pregnant person", "pregnant persons", "prejudice", "privilege", "privileges", "promote diversity", "promoting diversity", "pronoun", "pronouns", "prostitute", "race", "race and ethnicity", "racial", "racial diversity", "racial identity", "racial inequality", "racial justice", "racially", "racism", "segregation", "sense of belonging", "sex", "sexual preferences", "sexuality", "social justice", "sociocultural", "socioeconomic", "status", "stereotype", "stereotypes", "systemic", "systemically", "they/them", "trans", "transgender", "transsexual", "trauma", "traumatic", "tribal", "unconscious bias", "underappreciated", "underprivileged", "underrepresentation", "underrepresented", "underserved", "undervalued", "victim", "victims", "vulnerable populations", "woke", "women", "women and underrepresented"
-)
+# Function to load keywords from GitHub repository
+load_github_keywords <- function() {
+  # URL to the raw keywords.csv file in the GitHub repository
+  github_url <- "https://raw.githubusercontent.com/jhelvy/magaScreener/main/keywords.csv"
+  
+  tryCatch({
+    # Read the CSV file directly from GitHub using read.csv
+    keywords_df <- read.csv(github_url, stringsAsFactors = FALSE)
+    
+    # Extract the keywords column
+    if ("words" %in% colnames(keywords_df)) {
+      return(keywords_df$words)
+    } else {
+      # If column name is different, take the first column
+      return(keywords_df[[1]])
+    }
+  }, error = function(e) {
+    # If GitHub fetch fails, use the fallback hardcoded keywords
+    warning(paste("Error fetching keywords from GitHub:", e$message, "Using fallback keywords."))
+    return(get_fallback_keywords())
+  })
+}
+
+# Fallback hardcoded keywords (original list)
+get_fallback_keywords <- function() {
+  return(c("accessible", "activism", "activists", "advocacy", "advocate", "advocates", "affirming care", "all-inclusive", "allyship", "anti-racism", "antiracist", "assigned at birth", "assigned female at birth", "assigned male at birth", "assigned male", "assigned female", "at risk", "barrier", "barriers", "belong", "bias", "biased", "biased toward", "biases", "biases towards", "biologically female", "biologically male", "BIPOC", "Black", "breastfeed", "breastfeed + people", "breastfeed + person", "chestfeed", "chestfeed + people", "chestfeed + person", "clean energy", "climate crisis", "climate science", "commercial sex worker", "community diversity", "community equity", "confirmation bias", "cultural competence", "cultural differences", "cultural heritage", "cultural sensitivity", "culturally appropriate", "culturally responsive", "DEI", "DEIA", "DEIAB", "DEIJ", "disabilities", "disability", "discriminated", "discrimination", "discriminatory", "disparity", "diverse", "diverse backgrounds", "diverse communities", "diverse community", "diverse group", "diverse groups", "diversified", "diversify", "diversifying", "diversity", "enhance the diversity", "enhancing diversity", "environmental quality", "equal opportunity", "equality", "equitable", "equitableness", "equity", "ethnicity", "excluded", "exclusion", "expression", "female", "females", "feminism", "fostering inclusivity", "GBV", "gender", "gender based", "gender based violence", "gender diversity", "gender identity", "gender ideology", "gender-affirming care", "genders", "Gulf of Mexico", "hate speech", "health disparity", "health equity", "hispanic minority", "historically", "identity", "immigrants", "implicit bias", "implicit biases", "inclusion", "inclusive", "inclusive leadership", "inclusiveness", "inclusivity", "increase diversity", "increase the diversity", "indigenous community", "inequalities", "inequality", "inequitable", "inequities", "inequity", "injustice", "institutional", "intersectional", "intersectionality", "key groups", "key people", "key populations", "Latinx", "LGBT", "LGBTQ", "marginalize", "marginalized", "men who have sex with men", "mental health", "minorities", "minority", "most risk", "MSM", "multicultural", "Mx", "Native American", "non-binary", "nonbinary", "oppression", "oppressive", "orientation", "uterus", "people + uterus", "people-centered care", "person-centered", "person-centered care", "polarization", "political", "pollution", "pregnant people", "pregnant person", "pregnant persons", "prejudice", "privilege", "privileges", "promote diversity", "promoting diversity", "pronoun", "pronouns", "prostitute", "race", "race and ethnicity", "racial", "racial diversity", "racial identity", "racial inequality", "racial justice", "racially", "racism", "segregation", "sense of belonging", "sex", "sexual preferences", "sexuality", "social justice", "sociocultural", "socioeconomic", "status", "stereotype", "stereotypes", "systemic", "systemically", "they/them", "trans", "transgender", "transsexual", "trauma", "traumatic", "tribal", "unconscious bias", "underappreciated", "underprivileged", "underrepresentation", "underrepresented", "underserved", "undervalued", "victim", "victims", "vulnerable populations", "woke", "women", "women and underrepresented"))
+}
 
 # Custom JS for PDF handling - optimized for analysis with explicit button trigger
 js_code <- "
@@ -199,6 +223,13 @@ ui <- page_fluid(
       .col-sm-8 {
         padding-left: 30px;
       }
+      
+      /* Keyword source section styling */
+      .keyword-source-section {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #e9ecef;
+      }
     "))
   ),
   
@@ -227,6 +258,26 @@ ui <- page_fluid(
               style = "width: 0%"
             )
           )
+        )
+      ),
+      
+      # Keyword source selection section
+      div(
+        class = "keyword-source-section",
+        h4("Keyword Source", class = "mb-3"),
+        radioButtons("keyword_source", "Select Keyword Source:",
+                    choices = list(
+                      "Default" = "github",
+                      "Upload Custom Keywords" = "custom"
+                    ),
+                    selected = "github"),
+        
+        # Custom keywords file upload (conditionally shown)
+        conditionalPanel(
+          condition = "input.keyword_source == 'custom'",
+          fileInput("custom_keywords", "Upload Keywords CSV",
+                   accept = c(".csv")),
+          tags$p(class = "text-muted", "CSV file should have a header row with 'words' column containing keywords.")
         )
       ),
       
@@ -295,6 +346,53 @@ server <- function(input, output, session) {
   observe({
     if (!is.null(input$pdf_text)) {
       pdf_text(input$pdf_text)
+    }
+  })
+  
+  # Reactive value to store current keywords
+  current_keywords <- reactiveVal(NULL)
+  
+  # Initialize keywords from GitHub when app starts
+  observe({
+    # Only load if current_keywords is NULL (first load)
+    if (is.null(current_keywords())) {
+      github_keywords <- load_github_keywords()
+      current_keywords(github_keywords)
+    }
+  })
+  
+  # Update keywords when source changes or custom file is uploaded
+  observe({
+    # Reset when source changes
+    if (input$keyword_source == "github") {
+      github_keywords <- load_github_keywords()
+      current_keywords(github_keywords)
+    } else if (input$keyword_source == "custom" && !is.null(input$custom_keywords)) {
+      # Read custom keywords from uploaded file
+      tryCatch({
+        custom_file <- input$custom_keywords
+        custom_keywords_df <- read.csv(custom_file$datapath, stringsAsFactors = FALSE)
+        
+        # Extract keywords from the dataframe
+        if ("words" %in% colnames(custom_keywords_df)) {
+          custom_keywords <- custom_keywords_df$words
+        } else {
+          # If column name is different, take the first column
+          custom_keywords <- custom_keywords_df[[1]]
+        }
+        
+        # Update current keywords
+        current_keywords(custom_keywords)
+      }, error = function(e) {
+        # If error occurs, show a notification and use GitHub keywords
+        showNotification(
+          paste("Error reading custom keywords:", e$message, "Using default keywords instead."),
+          type = "error",
+          duration = 10
+        )
+        github_keywords <- load_github_keywords()
+        current_keywords(github_keywords)
+      })
     }
   })
   
@@ -478,6 +576,12 @@ server <- function(input, output, session) {
       return()
     }
     
+    # Check if we have keywords
+    if (is.null(current_keywords()) || length(current_keywords()) == 0) {
+      results(list(error = "No keywords available for analysis. Please check keyword source."))
+      return()
+    }
+    
     # Extract document info
     doc_path <- input$document$datapath
     doc_name <- input$document$name
@@ -495,8 +599,8 @@ server <- function(input, output, session) {
       
       setProgress(value = 0.5, detail = "Searching for keywords...")
       
-      # Find keywords in the text
-      keyword_results <- find_keywords(text, keywords)
+      # Find keywords in the text using current keywords
+      keyword_results <- find_keywords(text, current_keywords())
       
       # Calculate word and character counts
       words <- unlist(strsplit(text, "\\s+"))
@@ -513,6 +617,7 @@ server <- function(input, output, session) {
         total_chars = nchar(text),
         keywords_found = keyword_results$keywords,
         keyword_counts = keyword_results$counts,
+        keyword_source = input$keyword_source,
         error = NULL
       ))
     })
@@ -529,10 +634,18 @@ server <- function(input, output, session) {
   output$document_info <- renderText({
     if (is.null(results())) return("")
     
+    # Add keyword source information
+    keyword_source_info <- if (results()$keyword_source == "github") {
+      "GitHub Repository"
+    } else {
+      "Custom Upload"
+    }
+    
     paste0(
       "File Name: ", results()$document_name, "\n",
       "File Type: ", toupper(results()$file_type), "\n",
       "Word Count: ", format(results()$total_words, big.mark = ","), "\n",
+      "Keyword Source: ", keyword_source_info, "\n",
       "Analysis Date: ", format(Sys.time(), "%Y-%m-%d %H:%M:%S")
     )
   })

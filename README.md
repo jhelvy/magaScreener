@@ -3,11 +3,13 @@
 
 ## Source code for the [MAGA Keyword Screener](https://jhelvy.github.io/magaScreener/) app
 
-This tool allows you to analyze documents for specific MAGA-targeted
-keywords. It is intended to be used to help identify words that might
-get screened by the federal government, e.g. in a grant proposal for
-federal funding. Upload a document, and the app will count words,
-characters, and occurrences of predetermined keywords.
+This tool allows you to analyze documents for MAGA-targeted
+[keywords](https://github.com/jhelvy/magaScreener/blob/main/keywords.csv).
+You can also upload your own CSV file of keywords. It is intended to be
+used to help identify words that might get screened by an entity (e.g.,
+the federal government) so you can modify your language accordingly.
+Just upload a document, and the app will count occurrences of the
+keywords.
 
 Here’s a quick visual demo:
 
