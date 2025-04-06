@@ -38,12 +38,15 @@ jobs:
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
           packages:
-            cran::shinylive@0.2.0
+            cran::shinylive@0.3.0
             any::knitr
             any::rmarkdown
             any::downlit
             any::xml2
             any::DT
+            any::readxl
+            any::shinyjs
+            any::stringr
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
